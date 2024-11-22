@@ -54,7 +54,7 @@ export const WeatherIcon: React.FC<{ condition: string; isNight: boolean }> = ({
   }
 };
 
-export const WeatherCard: React.FC<WeatherCardProps> = ({ data }) => {
+const WeatherCard: React.FC<WeatherCardProps> = ({ data }) => {
   const now = new Date();
 
   const currentDate = now.toLocaleDateString("en-US", {
@@ -122,3 +122,5 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({ data }) => {
     </div>
   );
 };
+
+export default WeatherCard;

@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { WeatherCard } from "./components/WeatherCard";
-import { ForecastChart } from "./components/ForecastChart";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import { SearchBar } from "./components/SearchBar";
 import { ErrorMessage } from "./components/ErrorMessage";
 import { WeatherData, LocationError } from "./types/weather";
 import { CloudMoon } from "lucide-react";
 import { getWeatherData } from "./services/weather";
+
+const WeatherCard = lazy(() => import("./components/WeatherCard"));
+const ForecastChart = lazy(() => import("./components/ForecastChart"));
 
 function App() {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
@@ -37,7 +38,6 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#070B14] text-gray-100">
-     
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col items-center space-y-8">
           <div className="flex items-center space-x-3 mb-4">
@@ -59,12 +59,16 @@ function App() {
             <ErrorMessage error={error} />
           ) : weatherData ? (
             <div className="w-full max-w-4xl space-y-6">
-              <WeatherCard data={weatherData} />
+              <Suspense fallback={<div>Loading...</div>}>
+                <WeatherCard data={weatherData} />
+              </Suspense>
               <div className="forecast-card rounded-2xl p-6 shadow-xl backdrop-blur-lg">
                 <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-indigo-400 to-blue-500 bg-clip-text text-transparent">
                   5-Day Forecast
                 </h3>
-                <ForecastChart data={weatherData.forecast} />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <ForecastChart data={weatherData.forecast} />
+                </Suspense>
               </div>
             </div>
           ) : null}

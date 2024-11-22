@@ -14,7 +14,7 @@ interface ForecastChartProps {
   data: ForecastDay[];
 }
 
-export const ForecastChart: React.FC<ForecastChartProps> = ({ data }) => {
+const ForecastChart: React.FC<ForecastChartProps> = ({ data }) => {
   const chartData = data.map((day) => ({
     date: new Date(day.date).toLocaleDateString("en-US", { weekday: "short" }),
     min: day.temperature.min,
@@ -87,3 +87,5 @@ export const ForecastChart: React.FC<ForecastChartProps> = ({ data }) => {
     </div>
   );
 };
+
+export default ForecastChart
