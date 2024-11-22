@@ -78,9 +78,10 @@ body {
     );
 }
 
-.search-input {
+.searchContainer{
   border: 2px solid;
   animation: borderGradient 3s ease infinite;
+  border-radius: 8px;
 }
 
 .weather-card {
@@ -90,6 +91,10 @@ body {
     rgba(13, 18, 29, 0.95) 0%,
     rgba(31, 29, 77, 0.7) 100%
   );
+}
+
+.autocompletion{
+ background: #070b14;
 }
 
 .forecast-card {

@@ -12,6 +12,8 @@ export const getWeatherData = async (city: string) => {
       `${BASE_URL}/forecast?q=${city}&units=metric&appid=${API_KEY}`
     );
 
+    console.log(currentWeather, "fsh")
+
     const dailyForecasts = forecast.data.list
       .filter((_: any, index: number) => index % 8 === 0)
       .slice(0, 5)

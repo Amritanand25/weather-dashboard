@@ -1,9 +1,11 @@
-import React, { useEffect, useState, lazy, Suspense } from "react";
+import React, { useEffect, useState, lazy, Suspense, useRef } from "react";
 import { SearchBar } from "./components/SearchBar";
 import { ErrorMessage } from "./components/ErrorMessage";
 import { WeatherData, LocationError } from "./types/weather";
 import { CloudMoon } from "lucide-react";
 import { getWeatherData } from "./services/weather";
+import Autosuggestion from "./components/AutoSuggestion";
+import { getCityList } from "./services/city";
 
 const WeatherCard = lazy(() => import("./components/WeatherCard"));
 const ForecastChart = lazy(() => import("./components/ForecastChart"));
@@ -12,6 +14,12 @@ function App() {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [error, setError] = useState<LocationError | null>(null);
   const [loading, setLoading] = useState(true);
+  const [city, setCity] = useState("");
+  const [cities, setCities] = useState<string[]>([]);
+  const [hideAutoComplete, setHideAutoComplete] = useState<boolean>(false);
+
+  const ref = useRef<boolean>(false);
+  const cityRef = useRef<boolean>(false);
 
   const fetchWeather = async (city: string) => {
     try {
@@ -28,13 +36,37 @@ function App() {
   };
 
   useEffect(() => {
+    if (ref.current) return;
     const lastCity = localStorage.getItem("lastCity");
     if (lastCity) {
       fetchWeather(lastCity);
     } else {
       fetchWeather("London");
     }
+    ref.current = true;
   }, []);
+
+  useEffect(() => {
+    if (cityRef?.current) return;
+    const fetchCities = async () => {
+      const cityList = await getCityList();
+      setCities(cityList);
+      console.log(cityList);
+    };
+    fetchCities();
+    cityRef.current = true;
+  }, []);
+
+  const onSearchKeyupHandle = (city: string) => {
+    setCity(city);
+    setHideAutoComplete(false);
+  };
+
+  const onSelectSuggestion = (selectedCity: string) => {
+    setCity(selectedCity);
+    setHideAutoComplete(true);
+    fetchWeather(selectedCity);
+  };
 
   return (
     <div className="min-h-screen bg-[#070B14] text-gray-100">
@@ -48,7 +80,20 @@ function App() {
           </div>
 
           <div className="mb-4 w-full flex items-center justify-center">
-            <SearchBar onSearch={fetchWeather} />
+            <div className="relative w-full max-w-md">
+              <SearchBar
+                value={city}
+                onSearch={fetchWeather}
+                onKeyup={onSearchKeyupHandle}
+              />
+              {city && !hideAutoComplete && (
+                <Autosuggestion
+                  suggestions={cities}
+                  onSelect={onSelectSuggestion}
+                  query={city}
+                />
+              )}
+            </div>
           </div>
 
           {loading ? (
