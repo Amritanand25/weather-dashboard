@@ -2,7 +2,6 @@ import axios from 'axios';
 import { API_KEY, BASE_URL } from '../data/api';
 
 export const getWeatherData = async (city: string) => {
-
   try {
     const currentWeather = await axios.get(
       `${BASE_URL}/weather?q=${city}&units=metric&appid=${API_KEY}`
@@ -11,8 +10,6 @@ export const getWeatherData = async (city: string) => {
     const forecast = await axios.get(
       `${BASE_URL}/forecast?q=${city}&units=metric&appid=${API_KEY}`
     );
-
-    console.log(currentWeather, "fsh")
 
     const dailyForecasts = forecast.data.list
       .filter((_: any, index: number) => index % 8 === 0)

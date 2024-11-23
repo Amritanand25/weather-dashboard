@@ -51,7 +51,6 @@ function App() {
     const fetchCities = async () => {
       const cityList = await getCityList();
       setCities(cityList);
-      console.log(cityList);
     };
     fetchCities();
     cityRef.current = true;
@@ -102,7 +101,7 @@ function App() {
                 <div className="w-full h-80 bg-gray-800/30 rounded-2xl"></div>
               </div>
               <div className="animate-pulse flex space-x-4 w-full max-w-4xl">
-                <div className="w-full h-96 bg-gray-800/30 rounded-2xl"></div>
+                <div className="w-full h-[25.5rem] bg-gray-800/30 rounded-2xl"></div>
               </div>
             </React.Fragment>
           ) : error ? (

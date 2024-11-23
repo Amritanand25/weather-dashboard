@@ -88,4 +88,4 @@ const ForecastChart: React.FC<ForecastChartProps> = ({ data }) => {
   );
 };
 
-export default ForecastChart
+export default ForecastChart;

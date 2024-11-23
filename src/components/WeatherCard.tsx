@@ -85,7 +85,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ data }) => {
           </p>
         </div>
 
-        <div className="flex-1 flex justify-center">
+        <div className="flex-1 flex justify-center hover:scale-105 transform transition-transform duration-300">
           <WeatherIcon condition={data.condition} isNight={isNight} />
         </div>
 
